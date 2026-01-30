@@ -1,6 +1,6 @@
-# Name:
-# Student ID:
-# Email:
+# Name: Ezeddin Kamel
+# Student ID: 15287001
+# Email: ezeddin@umich.edu
 # Who or what you worked with on this homework (including generative AI like ChatGPT):
 # If you worked with generative AI also add a statement for how you used it.
 # e.g.:
@@ -33,6 +33,10 @@ class CouponDispenser:
             coupon_cards (list[str]): list of possible coupons users can receive.
         """
         # TODO: Implement per instructions
+        self.coupon_cards = coupon_cards
+        customer_roster = customer_roster[0]
+        issued_indices = issued_indices[0]
+
         pass
 
     def __str__(self):
@@ -44,7 +48,18 @@ class CouponDispenser:
             str
         """
         # TODO: Implement per instructions
-        pass
+        self.coupon_cards = [ "10% off", "Free small coffee", "Buy 1 get 1 half off", "Free extra espresso shot", ""]
+        
+
+        for coupon in self.coupon_cards:
+            if coupon[-1]:
+                return coupon
+            elif coupon:
+                return coupon + "|"
+        
+        return self.coupon_cards
+
+
 
     def issue_coupon(self, name):
         """
@@ -61,7 +76,16 @@ class CouponDispenser:
             str: message as described above
         """
         # TODO: Implement per instructions
-        pass
+        results = []
+
+        random.shuffle(self.coupon_cards)
+        for i in range(len(name)):
+            results.append(name[i], self.coupon_cards[i])
+
+        return results
+
+
+
 
     def distribute_session(self):
         """
@@ -114,6 +138,8 @@ def main():
         "Buy 1 get 1 half off",
         "Free extra espresso shot",
     ]
+
+
 
     # Uncomment the lines below as you implement each function.
     # box = CouponDispenser(coupon_cards)
@@ -313,7 +339,7 @@ def test():
         with redirect_stdout(buf8):
             box8.tally_distribution()
         printed8 = buf8.getvalue()
-        check("MiXeD distribution count: 2." in printed8,
+        check("coupon: MiXeD is distributed 2 times." in printed8,
               "tally_distribution: prints correct format with mixed case")
 
         # Test multiple coupons with same count (should stay in original order)
@@ -389,7 +415,7 @@ def test():
         with redirect_stdout(buf_tally_main):
             box_tally_main.tally_distribution()
         tally_output = buf_tally_main.getvalue()
-        check("distribution count:" in tally_output, 
+        check("is distributed" in tally_output, 
               "tally_distribution: output format correct for main() display")
     except Exception as e:
         check(False, f"tally_distribution in main: unexpected exception {e}")
