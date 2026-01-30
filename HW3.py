@@ -78,16 +78,22 @@ class CouponDispenser:
         # TODO: Implement per instructions
         results = []
 
-        random.shuffle(self.coupon_cards)
-        for i in range(len(name)):
-            results.append(name[i], self.coupon_cards[i])
+        for name in name:
+            if len(coupon) == 0:
+                return("The box is empty.")
+            else:
+                coupon = random.choice(coupon)
+                results.append(name + ": " + coupon)
+        
+        
 
-        return results
+
+            
 
 
 
 
-    def distribute_session(self):
+    def distribute_session(self, results):
         """
         Run the "coupon dispenser" session.
 
@@ -103,7 +109,19 @@ class CouponDispenser:
         Reminder: Use lists only (no dictionaries).
         """
         # TODO: Implement per instructions 
-        pass
+        status = True
+
+        while status == True:
+            response = input("Wat are the names?")
+
+            if response == "exit":
+                print("Goodby!") and status = False
+            elif response == "show":
+                results
+            else:
+                CouponDispenser.issue_coupon()
+                
+    
 
     def tally_distribution(self):
         """
