@@ -25,7 +25,7 @@ class CouponDispenser:
 
     """
 
-    def __init__(self, coupon_cards):
+    def __init__(self, coupon_cards, customer_roster, issued_indices):
         """
         Initialize a new CouponDispenser object.
 
@@ -34,10 +34,9 @@ class CouponDispenser:
         """
         # TODO: Implement per instructions
         self.coupon_cards = coupon_cards
-        customer_roster = customer_roster[0]
-        issued_indices = issued_indices[0]
+        self.customer_roster = customer_roster
+        self.issued_indices = issued_indices
 
-        pass
 
     def __str__(self):
         """
@@ -48,20 +47,17 @@ class CouponDispenser:
             str
         """
         # TODO: Implement per instructions
-        self.coupon_cards = [ "10% off", "Free small coffee", "Buy 1 get 1 half off", "Free extra espresso shot", ""]
-        
 
-        for coupon in self.coupon_cards:
-            if coupon[-1]:
-                return coupon
-            elif coupon:
-                return coupon + "|"
-        
-        return self.coupon_cards
+        pipes = " | ".join(self.coupon_cards)
+
+        if self.coupon_cards == 0:
+            return ""
+        else:
+            pipes
+        return 
 
 
-
-    def issue_coupon(self, name):
+    def issue_coupon(self, name, customer_roster):
         """
         Assign name with a random coupon. If name is already assigned a coupon, return it.
         If the list coupon_cards is empty, return:
@@ -75,25 +71,22 @@ class CouponDispenser:
         Returns:
             str: message as described above
         """
-        # TODO: Implement per instructions
-        results = []
+        # Check if name already has a coupon in customer_roster
+        for entry in customer_roster:
+            if entry.startswith(name + ": "):
+                return entry.split(": ", 1)[1]
 
-        for name in name:
-            if len(coupon) == 0:
-                return("The box is empty.")
-            else:
-                coupon = random.choice(coupon)
-                results.append(name + ": " + coupon)
+        if len(self.coupon_cards) == 0:
+            customer_roster.append(name + ": The box is empty.")
+        else:
+            coupon = random.choice(self.coupon_cards)
+            customer_roster.append(name + ": " + coupon)
+            self.coupon_cards.remove(coupon)
         
         
 
 
-            
-
-
-
-
-    def distribute_session(self, results):
+    def distribute_session(self, customer_roster):
         """
         Run the "coupon dispenser" session.
 
@@ -113,13 +106,18 @@ class CouponDispenser:
 
         while status == True:
             response = input("Wat are the names?")
+            responses = response.split(", " or",")
 
-            if response == "exit":
-                print("Goodby!") and status = False
-            elif response == "show":
-                results
-            else:
-                CouponDispenser.issue_coupon()
+            for response in responses:
+                if response == "exit":
+                    print("Goodby!")
+                    status = False
+                elif response == "show":
+                    print(f"{customer_roster}")
+                else:
+                    name = response
+                    self.issue_coupon(name, customer_roster)
+
                 
     
 
@@ -138,6 +136,8 @@ class CouponDispenser:
         Returns:
             None
         """
+        
+
         # TODO: Implement per instructions
         pass
 
@@ -156,14 +156,16 @@ def main():
         "Buy 1 get 1 half off",
         "Free extra espresso shot",
     ]
+    customer_roster = []
+    costimer_indices = []
 
 
 
     # Uncomment the lines below as you implement each function.
-    # box = CouponDispenser(coupon_cards)
-    # box.distribute_session()
-    # box.tally_distribution()
-    pass
+    box = CouponDispenser(coupon_cards, customer_roster, costimer_indices)
+    box.distribute_session(customer_roster)
+    box.tally_distribution()
+
 
 
 # -----------------------
